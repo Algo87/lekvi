@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>lekvi</title>
+</head>
+<body>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap');
+
+    .estate-evaluation {
+        font-family: 'Roboto';
+        font-style: normal;
+    }
+
+    .estate-evaluation h4 {
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 18px;
+        text-align: center;
+        color: #333333;
+        margin: 0 0 10px 0;
+
+    }
+
+    .estate-evaluation h3 {
+        font-weight: 500;
+        font-size: 35px;
+        line-height: 41px;
+        text-align: center;
+        color: #333333;
+        margin: 0 0 30px 0;
+    }
+
+    .estate-evaluation h5 {
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 18px;
+        text-align: center;
+        color: #333333;
+        margin: 0 0 60px 0;
+    }
+
+
+    .estate-evaluation_form-block {
+        padding: 40px 130px 50px 130px;
+        max-width: 1000px;
+        width: 100%;
+        box-sizing: border-box;
+        background: #FFFFFF;
+        box-shadow: 3px 3px 20px rgba(16, 50, 53, 0.15);
+        margin: 0 auto 148px auto;
+    }
+
+    .estate-evaluation_nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin: 0 0 50px 0;
+    }
+
+    .estate-evaluation_nav-item {
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 15px;
+        text-align: center;
+        color: #999999;
+        padding: 0 34px;
+        position: relative;
+        list-style-type: none;
+        cursor: pointer;
+    }
+
+    .estate-evaluation_nav-item.active {
+        color: #333333;
+    }
+
+    .estate-evaluation_nav-item:not(:last-child):after {
+        position: absolute;
+        content: ">";
+        width: 8px;
+        height: 16px;
+        background: transparent;
+        color: #999999;
+        top: 0;
+        right: 0;
+    }
+
+    .estate-evaluation_nav-item.active:not(:last-child):after {
+        color: #333333;
+    }
+
+    .estate-evaluation_form-item {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .estate-evaluation_radio-input--title {
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 18px;
+        text-align: left;
+        color: #333333;
+        margin-bottom: 15px;
+        margin-top: 0;
+        display: block;
+    }
+
+    .estate-evaluation_radio-input {
+        position: absolute;
+        background: transparent;
+        left: -99999999px;
+    }
+
+    .estate-evaluation_input,
+    .estate-evaluation_radio-label {
+        width: 240px;
+        height: 45px;
+        display: block;
+        padding: 14px 0;
+        box-sizing: border-box;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 18px;
+        text-align: center;
+    }
+
+    .estate-evaluation_input {
+        text-align: left;
+        padding: 14px 10px;
+    }
+
+    .estate-evaluation_radio-input:checked + label.estate-evaluation_radio-label {
+        background: #103532;
+        color: #FFFFFF;
+        border: 1px solid #103532;
+    }
+
+    .estate-evaluation_input,
+    .estate-evaluation_radio-input:not(:checked) + label.estate-evaluation_radio-label {
+        background: #FFFFFF;
+        border: 1px solid #DDDDDD;
+        box-sizing: border-box;
+        color: #333333;
+    }
+
+
+    .estate-evaluation_form_button {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .estate-evaluation_form-elem {
+        position: relative;
+        padding-bottom: 30px;
+    }
+
+    #step-3 .estate-evaluation_form-elem:not(:last-child),
+    #step-1 .estate-evaluation_form-elem:not(:last-child) {
+        margin-right: 10px;
+    }
+
+    .estate-evaluation_form_button button:not(:last-child) {
+        margin-right: 10px;
+    }
+
+    .estate-evaluation_form_button button {
+        width: 200px;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 18px;
+    }
+
+    .estate-evaluation_form_button button.back {
+        background: #fff;
+        border: 1px solid #C01F32;
+        color: #C01F32;
+    }
+
+    .estate-evaluation_form_button button.active {
+        background: #C01F32;
+        border: 1px solid #C01F32;
+        color: #fff;
+    }
+
+    .w-100 {
+        width: 100%;
+    }
+
+    .google-map-container {
+        width: 100%;
+        height: 320px;
+        background: #ccc;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .estate-evaluation_radio-label.small {
+        width: 177px;
+    }
+
+    .estate-evaluation_link-block {
+        display: none;
+    }
+
+    .estate-evaluation_link-block.show {
+        display: block;
+    }
+
+    .estate-evaluation__error {
+        border: 1px solid red;
+        position: relative;
+    }
+
+    .estate-evaluation__error-text {
+        font-size: 14px;
+        line-height: 14px;
+        position: absolute;
+        bottom: 13px;
+        left: 0;
+        color: red;
+    }
+
+    @media screen and (max-width: 1023px) {
+        .estate-evaluation_form-block {
+            padding: 40px;
+        }
+
+        .estate-evaluation h4 {
+            font-size: 13px;
+            line-height: 15px;
+        }
+
+        .estate-evaluation h3 {
+            font-size: 25px;
+            line-height: 29px;
+            margin-bottom: 20px;
+        }
+
+        .estate-evaluation h5 {
+            font-size: 13px;
+            line-height: 15px;
+            margin-bottom: 30px;
+        }
+    }
+
+    .estate-evaluation_mobile-dots {
+        display: none;
+    }
+
+    @media screen and (max-width: 850px) {
+        .estate-evaluation_form-block {
+            padding: 20px;
+        }
+
+        .estate-evaluation_radio-input:checked + label.estate-evaluation_radio-label {
+            width: auto;
+            height: auto;
+            display: block;
+            box-sizing: border-box;
+            font-weight: 400;
+            font-size: 15px;
+            line-height: 20px;
+            text-align: left;
+            position: relative;
+            background: transparent;
+            color: #333333;
+            border: none;
+            padding: 0 30px;
+        }
+
+        .estate-evaluation_radio-input:checked + label.estate-evaluation_radio-label:before {
+            position: absolute;
+            content: "";
+            width: 20px;
+            height: 20px;
+            border: 1px solid #13403E;
+            border-radius: 50%;
+            box-sizing: border-box;
+            left: 0;
+        }
+
+        .estate-evaluation_radio-input:checked + label.estate-evaluation_radio-label:after {
+            position: absolute;
+            content: "";
+            width: 10px;
+            height: 10px;
+            background: #13403E;
+            border-radius: 50%;
+            box-sizing: border-box;
+            left: 5px;
+            top: 5px;
+        }
+
+        .estate-evaluation_radio-input:not(:checked) + label.estate-evaluation_radio-label {
+            width: auto;
+            height: auto;
+            display: block;
+            padding: 0 30px;
+            box-sizing: border-box;
+            font-weight: 400;
+            font-size: 15px;
+            line-height: 20px;
+            background: #FFFFFF;
+            border: none;
+            color: #333333;
+            position: relative;
+            text-align: left;
+        }
+
+        .estate-evaluation_radio-input:not(:checked) + label.estate-evaluation_radio-label:before {
+            position: absolute;
+            content: "";
+            width: 20px;
+            height: 20px;
+            border: 1px solid #999999;
+            border-radius: 50%;
+            box-sizing: border-box;
+            left: 0;
+        }
+
+        .estate-evaluation_form-item {
+            flex-wrap: wrap;
+        }
+
+        .estate-evaluation_form-elem {
+            width: 100%;
+            padding-bottom: 10px;
+        }
+
+        .estate-evaluation_radio-input--title {
+            padding-top: 10px;
+        }
+
+        .estate-evaluation_input {
+            margin-bottom: 20px;
+        }
+
+        .estate-evaluation_form_button button {
+            margin: 0
+        }
+
+        .estate-evaluation_mobile-dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+        }
+
+        .estate-evaluation_mobile-dots__item {
+            width: 5px;
+            height: 5px;
+            background: #999999;
+            border-radius: 50%;
+            margin: 5px;
+        }
+
+        .estate-evaluation_mobile-dots__item.active {
+            background: #333333;
+        }
+
+        .estate-evaluation_nav {
+            display: none;
+        }
+
+        .estate-evaluation_form_button button {
+            margin: 10px 0 0 0 !important;
+            width: 100%;
+        }
+    }
+
+</style>
+
+<div class="estate-evaluation">
+    <h4>БЫСТРАЯ ПРОДАЖА ВАШЕЙ НЕДВИЖИМОСТИ</h4>
+    <h3>Онлайн оценка недвижимости</h3>
+    <h5>Получите оценку рыночной цены недвижимости за считанные минуты</h5>
+    <form id="estate-evaluation-form" class="estate-evaluation_form-block">
+        <ul class="estate-evaluation_nav">
+            <li class="estate-evaluation_nav-item active" data-id="step-1">Параметры недвижимости</li>
+            <li class="estate-evaluation_nav-item" data-id="step-2">Местоположение</li>
+            <li class="estate-evaluation_nav-item" data-id="step-3">Ваши данные</li>
+        </ul>
+        <div class="estate-evaluation_link-block show" id="step-1">
+            <div class="estate-evaluation_form-item">
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Тип недвижимости</p>
+                    <input class="estate-evaluation_radio-input" type="radio" name="type-estate" checked
+                           value="type_flat"
+                           id="type_flat"/>
+                    <label class="estate-evaluation_radio-label" for="type_flat">
+                        Квартира
+                    </label>
+                </div>
+                <div class="estate-evaluation_form-elem">
+                    <input class="estate-evaluation_radio-input" type="radio" name="type-estate" value="type_house"
+                           id="type_house"/>
+                    <label class="estate-evaluation_radio-label" for="type_house">
+                        Дом
+                    </label>
+                </div>
+            </div>
+            <div class="estate-evaluation_form-item ">
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Состояние</p>
+                    <input class="estate-evaluation_radio-input" type="radio" name="state-estate" checked
+                           value="needs_renovation"
+                           id="needs_renovation"/>
+                    <label class="estate-evaluation_radio-label" for="needs_renovation">
+                        Needs renovation
+                    </label>
+                </div>
+                <div class="estate-evaluation_form-elem">
+                    <input class="estate-evaluation_radio-input" type="radio" name="state-estate"
+                           value="well_maintained"
+                           id="well_maintained"/>
+                    <label class="estate-evaluation_radio-label" for="well_maintained">
+                        Well maintained
+                    </label>
+                </div>
+                <div class="estate-evaluation_form-elem">
+                    <input class="estate-evaluation_radio-input" type="radio" name="state-estate"
+                           value="newly_renovated"
+                           id="newly_renovated"/>
+                    <label class="estate-evaluation_radio-label" for="newly_renovated">
+                        Newly renovated
+                    </label>
+                </div>
+            </div>
+            <div class="estate-evaluation_form-item ">
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Количество комнат</p>
+                    <input class="estate-evaluation_input" type="text" name="amount_flat" value="3"
+                           id="amount_flat"/>
+                    <label class="estate-evaluation_label" for="amount_flat"></label>
+                </div>
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Планировка</p>
+                    <input class="estate-evaluation_radio-input" type="radio" checked name="planning" value="planning1"
+                           id="planning1"/>
+                    <label class="estate-evaluation_radio-label" for="planning1">
+                        +kk
+                    </label>
+                </div>
+                <div class="estate-evaluation_form-elem">
+                    <input class="estate-evaluation_radio-input" type="radio" name="planning" value="planning2"
+                           id="planning2"/>
+                    <label class="estate-evaluation_radio-label" for="planning2">
+                        +1
+                    </label>
+                </div>
+            </div>
+            <div class="estate-evaluation_form-item ">
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Площадь (м2)</p>
+                    <input class="estate-evaluation_input" type="text" name="area_flat" value="60"
+                           id="area_flat"/>
+                    <label class="estate-evaluation_label" for="area_flat"></label>
+                </div>
+            </div>
+            <div class="estate-evaluation_form_button">
+                <button class="active evaluation_button" data-id="step-2">Вперед</button>
+            </div>
+        </div>
+        <div class="estate-evaluation_link-block" id="step-2">
+            <div class="estate-evaluation_form-elem">
+                <p class="estate-evaluation_radio-input--title w-100">Местоположение</p>
+                <input class="estate-evaluation_input w-100" type="text" name="location"
+                       value="" id="location"/>
+
+            </div>
+            <div class="estate-evaluation_form-elem google-map-container" id="google-map-container">google map</div>
+            <div class="estate-evaluation_form_button">
+                <button class="back evaluation_button" data-id="step-1">Назад</button>
+                <button class="active evaluation_button" data-id="step-3">Вперед</button>
+            </div>
+        </div>
+        <div class="estate-evaluation_link-block" id="step-3">
+            <div class="estate-evaluation_form-item">
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Обращение</p>
+                    <input class="estate-evaluation_radio-input" type="radio" name="gender" checked
+                           value="male"
+                           id="gender_male"/>
+                    <label class="estate-evaluation_radio-label" for="gender_male">Mr
+                    </label>
+                </div>
+                <div class="estate-evaluation_form-elem">
+                    <input class="estate-evaluation_radio-input" type="radio" name="gender" value="female"
+                           id="gender_female"/>
+                    <label class="estate-evaluation_radio-label" for="gender_female">
+                        Mrs
+                    </label>
+                </div>
+            </div>
+            <div class="estate-evaluation_form-item ">
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Имя</p>
+                    <input class="estate-evaluation_input" type="text" name="customer_first_name"
+                           id="customer_first_name"/>
+
+                </div>
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Фамилия</p>
+                    <input class="estate-evaluation_input" type="text" name="customer_second_name"
+                           id="customer_second_name"/>
+
+                </div>
+            </div>
+            <div class="estate-evaluation_form-item ">
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Email</p>
+                    <input class="estate-evaluation_input" type="email" name="customer_email"
+                           id="customer_email"/>
+
+                </div>
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Телефон</p>
+                    <input class="estate-evaluation_input" type="text" name="customer_phone"
+                           id="customer_phone"/>
+
+                </div>
+            </div>
+            <div class="estate-evaluation_form-item ">
+                <div class="estate-evaluation_form-elem">
+                    <p class="estate-evaluation_radio-input--title">Reason for your interest</p>
+                    <input class="estate-evaluation_radio-input" type="radio" checked name="customer_interest"
+                           value="buy"
+                           id="buy"/>
+                    <label class="estate-evaluation_radio-label small" for="buy">
+                        Buy
+                    </label>
+                </div>
+                <div class="estate-evaluation_form-elem">
+                    <input class="estate-evaluation_radio-input" type="radio" name="customer_interest" value="Sell"
+                           id="Sell"/>
+                    <label class="estate-evaluation_radio-label small" for="Sell">
+                        Sell
+                    </label>
+                </div>
+
+                <div class="estate-evaluation_form-elem">
+                    <input class="estate-evaluation_radio-input" type="radio" name="customer_interest"
+                           value="just_looking"
+                           id="just_looking"/>
+                    <label class="estate-evaluation_radio-label small" for="just_looking">
+                        Just looking
+                    </label>
+                </div>
+                <div class="estate-evaluation_form-elem">
+                    <input class="estate-evaluation_radio-input" type="radio" name="customer_interest" value="other"
+                           id="other"/>
+                    <label class="estate-evaluation_radio-label small" for="other">
+                        Other
+                    </label>
+                </div>
+            </div>
+            <div class="estate-evaluation_form_button">
+                <button class="back evaluation_button" data-id="step-2">Назад</button>
+                <button type="submit" class="active" id="send-estate-evaluation">Отправить</button>
+            </div>
+        </div>
+
+        <div class="estate-evaluation_mobile-dots">
+            <div class="estate-evaluation_mobile-dots__item active" data-id="step-1"></div>
+            <div class="estate-evaluation_mobile-dots__item" data-id="step-2"></div>
+            <div class="estate-evaluation_mobile-dots__item" data-id="step-3"></div>
+        </div>
+    </form>
+
+
+</div>
+
+
+<!-- блок с картинками -->
+
+<div style="max-width: 940px; margin:0 auto;">
+    <style>
+        .partner-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 26px;
+            background: #F2F7F5;
+        }
+        .partner-container_img{
+            padding: 12px 24px;
+        }
+    </style>
+    <h3>S kým spolupracujeme</h3>
+    <div class="partner-container">
+        <div class="partner-container_img">
+            <img src="img/kb.svg" alt="kb"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/oberbank.svg" alt="oberbank"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/hypotecni-banka.svg" alt="hypotecni-banka"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/raiffeisen.svg" alt="raiffeisen"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/4fin.svg" alt="4fin"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/mbank.svg" alt="mbank"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/ceska-sporitelna.svg" alt="ceska-sporitelna"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/unicredit.svg" alt="unicredit"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/moneta.svg" alt="moneta"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/equa.svg" alt="equa"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/csob.svg" alt="csob"/>
+        </div>
+        <div class="partner-container_img">
+            <img src="img/banka-creditas.svg" alt="banka-creditas"/>
+        </div>
+
+    </div>
+</div>
+<script>
+    function showStep() {
+        const links = document.querySelectorAll('.estate-evaluation_nav-item');
+        const linkBlocks = document.querySelectorAll(".estate-evaluation_link-block");
+        const evaluationButtons = document.querySelectorAll(".evaluation_button");
+        const mobileDots = document.querySelectorAll(".estate-evaluation_mobile-dots__item");
+
+        links.forEach((link) => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                const currentDataId = this.getAttribute("data-id");
+                activeControl(links, currentDataId);
+                showControl(linkBlocks, currentDataId);
+            })
+        });
+
+        evaluationButtons.forEach((btn) => {
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+                const currentBtnStepId = this.getAttribute("data-id");
+                activeControl(links, currentBtnStepId);
+                showControl(linkBlocks, currentBtnStepId);
+            });
+        });
+
+        mobileDots.forEach((dot) => {
+            dot.addEventListener("click", function (e) {
+                const currentDotDataId = this.getAttribute("data-id");
+                activeControl(mobileDots, currentDotDataId);
+                showControl(linkBlocks, currentDotDataId);
+            })
+        })
+    }
+
+    function activeControl(links, currentBtnStepId) {
+        links.forEach((l) => {
+            l.getAttribute("data-id") === currentBtnStepId && l.classList.add("active");
+            l.getAttribute("data-id") !== currentBtnStepId && l.classList.remove("active");
+        });
+    }
+
+    function showControl(linkBlocks, currentStepId) {
+        linkBlocks.forEach((block) => {
+            if (block.getAttribute("id") === currentStepId) {
+                block.classList.add("show");
+            } else {
+                block.classList.remove("show");
+            }
+        })
+    }
+
+    showStep();
+
+    function sendForm() {
+        const sendBtn = document.querySelector("#send-estate-evaluation");
+        const form = document.querySelector("#estate-evaluation-form");
+        const inputs = form.querySelectorAll("input[type=text], input[type=email]");
+        sendBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            sendBtn.nextElementSibling
+            && sendBtn.nextElementSibling.classList.contains("estate-evaluation__error-text")
+            && sendBtn.nextElementSibling.remove();
+
+            if (validationEstateEvaluationForm(inputs)) {
+                let formData = new FormData(form);
+                fetch("/test.json",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                ).then((response) => {
+                    return response.json();
+                }).then((response) => {
+                    console.log("response", response);
+                })
+            } else {
+
+            }
+        })
+    }
+
+    sendForm();
+
+    function validationOnInput() {
+        const form = document.querySelector("#estate-evaluation-form");
+        const inputs = form.querySelectorAll("input[type=text], input[type=email]");
+        const regEmail = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        inputs.forEach(input => {
+            input.addEventListener("change", function () {
+                input.classList.remove("estate-evaluation__error");
+                input.nextElementSibling
+                && input.nextElementSibling.classList.contains("estate-evaluation__error-text")
+                && input.nextElementSibling.remove();
+                if (input.value.trim() === "") {
+                    input.classList.add("estate-evaluation__error");
+                    input.insertAdjacentHTML('afterend', '<span class="estate-evaluation__error-text">Обязательное поле</span>');
+                } else if (input.getAttribute("type") === "email" && regEmail.test(input.value) == false) {
+                    input.classList.add("estate-evaluation__error");
+                    input.insertAdjacentHTML('afterend', '<span class="estate-evaluation__error-text">Проверьте корректность email</span>');
+                }
+            })
+        })
+    }
+
+    validationOnInput()
+
+
+    function validationEstateEvaluationForm(inputs) {
+        const regEmail = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        let isValid = [];
+        inputs.forEach(input => {
+            input.classList.remove("estate-evaluation__error");
+            input.nextElementSibling
+            && input.nextElementSibling.classList.contains("estate-evaluation__error-text")
+            && input.nextElementSibling.remove();
+            if (input.value.trim() === "") {
+                input.classList.add("estate-evaluation__error");
+                input.insertAdjacentHTML('afterend', '<span class="estate-evaluation__error-text">Обязательное поле</span>');
+                isValid.push(false);
+            } else if (input.getAttribute("type") === "email" && regEmail.test(input.value) == false) {
+                input.classList.add("estate-evaluation__error");
+                input.insertAdjacentHTML('afterend', '<span class="estate-evaluation__error-text">Проверьте корректность email</span>');
+                isValid.push(false);
+            } else {
+                isValid.push(true);
+            }
+        });
+        return !isValid.includes(false);
+    }
+</script>
+
+</body>
+</html>
